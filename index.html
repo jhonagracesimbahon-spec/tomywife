@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Wife!</title>
+    <style>
+        /* IMPORT ELEGANT FONTS */
+        @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Sacramento&display=swap');
+
+        :root {
+            --pink-deep: #d63384;
+            --pink-medium: #e66b96;
+            --pink-soft: #ff8fa3;
+            --pink-light: #fff0f3;
+            --pink-border: #ffccd5; 
+            --text-color: #5d2e46;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(120deg, #fccb90 0%, #d57eeb 100%);
+            background-size: 200% 200%;
+            animation: gradientBG 15s ease infinite;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Playfair Display', serif;
+            overflow: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* FLOATING BACKGROUND PARTICLES */
+        .bg-hearts {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+        .bg-heart {
+            position: absolute;
+            bottom: -50px;
+            color: rgba(255, 255, 255, 0.6);
+            animation: floatUp 10s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* --- THE MAIN CONTAINER (RESPONSIVE) --- */
+        .window-frame {
+            width: 95%; 
+            max-width: 900px;
+            height: 85vh; 
+            max-height: 620px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Top Bar */
+        .title-bar {
+            height: 35px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            gap: 8px;
+            border-bottom: 1px solid #f0f0f0;
+            flex-shrink: 0;
+        }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .red { background: #ff5f57; }
+        .yellow { background: #febc2e; }
+        .green { background: #28c840; }
+        .app-title {
+            margin-left: 10px;
+            font-size: 12px;
+            color: #aaa;
+            font-family: sans-serif;
+        }
+
+        .content-area {
+            position: relative;
+            flex: 1;
+            width: 100%;
+            background: radial-gradient(circle, #fffbfc 0%, #fff0f5 100%);
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.8s ease-in-out;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+        .slide.active { display: flex; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* --- SLIDE 1: CLOSED ENVELOPE DESIGN --- */
+        .envelope-container { cursor: pointer; transition: 0.3s; transform: scale(0.7); }
+        .envelope-main {
+            width: 320px; height: 220px;
+            background: var(--pink-deep);
+            border-radius: 10px; /* Standard radius for closed look */
+            position: relative;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        /* CLOSED FLAP (Triangle pointing DOWN) */
+        .envelope-main::before {
+            content: ''; position: absolute; 
+            top: 0; left: 0;
+            border-left: 160px solid transparent;
+            border-right: 160px solid transparent;
+            border-top: 130px solid #e75a95; /* Points DOWN toward the body */
+            z-index: 2;
+        }
+        .heart-seal {
+            width: 60px; height: 60px;
+            background: #fff; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 30px; color: var(--pink-deep);
+            z-index: 5; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            position: relative;
+            top: 15px; /* Sits at the tip of the closed flap */
+        }
+        .open-text { margin-top: 20px; font-size: 1.2rem; color: var(--pink-deep); letter-spacing: 2px; text-align: center;}
+
+        /* --- CARD FRAME (Shared) --- */
+        .paper-frame {
+            width: 90%; height: 90%; background: #fff;
+            padding: 15px; box-sizing: border-box;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15); border-radius: 5px;
+            position: relative; display: flex;
+            border: 8px solid var(--pink-border); 
+            overflow-y: auto;
+        }
+
+        /* --- CARD 2: FLOWERS --- */
+        #card2 .paper-frame { align-items: center; justify-content: center; flex-direction: column; }
+        .bouquet-img { max-width: 80%; height: auto; max-height: 50%; object-fit: contain; }
+        .flower-msg-side { text-align: center; }
+        .flower-msg-script { font-family: 'Sacramento', cursive; font-size: 3.5rem; color: var(--pink-medium); line-height: 1.1; }
+
+        /* --- CARD 3: BIG PHOTO HEART --- */
+        #card3 .paper-frame { flex-direction: column; align-items: center; text-align: center; }
+        .map-header-text { font-family: 'Sacramento', cursive; font-size: 2.5rem; color: var(--pink-medium); margin-top: 5px; }
+        .map-description { font-family: 'Playfair Display', serif; font-size: 0.85rem; color: #777; max-width: 90%; line-height: 1.3; margin-bottom: 10px; }
+        .map-heart {
+            width: 200px; height: 200px; 
+            background-size: cover; background-position: center;
+            filter: grayscale(30%) contrast(110%); 
+            clip-path: path("M100,50 C66.7,-25 -33.3,25 11.1,93.8 L100,187.5 L188.9,93.8 C233.3,25 133.3,-25 100,50 Z");
+            border: 2px solid white; margin: 5px 0;
+        }
+        .map-date { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--pink-medium); margin-bottom: 10px; }
+
+        /* NAV ELEMENTS */
+        .btn-back { position: absolute; bottom: 15px; left: 20px; cursor: pointer; color: #999; z-index: 20; font-size: 0.9rem;}
+        .greeting-header { font-family: 'Great Vibes', cursive; font-size: 2.5rem; text-align: center; background: -webkit-linear-gradient(#ff5f6d, #ffc371); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 20px; }
+        .popping-hearts-container { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .heart-frame-pop { width: 100px; height: 100px; clip-path: path("M50,22 C33.3,-14 -16.7,14 5.6,47.2 L50,94.4 L94.4,47.2 C116.7,14 66.7,-14 50,22 Z"); background-color: white; display: flex; justify-content: center; align-items: center; opacity: 0; transform: scale(0); animation: popUp 0.6s forwards; }
+        .heart-frame-pop img { width: 100%; height: 100%; object-fit: cover; }
+        @keyframes popUp { to { opacity: 1; transform: scale(1); } }
+        
+        .cards-selection { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
+        .romantic-card { width: 110px; height: 150px; background: linear-gradient(to top, #fad0c4 0%, #ffd1ff 100%); border-radius: 10px; cursor: pointer; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 1px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.1);}
+        .card-icon { font-size: 30px; margin-bottom: 5px;}
+        .card-label { font-size: 1rem; color: var(--text-color); font-weight: bold; }
+
+        .btn-grad { background-image: linear-gradient(to right, #ff9a9e 0%, #fecfef 51%, #ff9a9e 100%); padding: 10px 25px; color: white; border-radius: 50px; border: none; cursor: pointer; font-family: 'Playfair Display'; }
+
+        .music-btn { position: fixed; bottom: 10px; left: 10px; background: white; padding: 8px 12px; border-radius: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer; color: var(--pink-deep); z-index: 100; font-size: 12px; }
+
+        /* --- DESKTOP ADJUSTMENTS --- */
+        @media (min-width: 600px) {
+            .envelope-container { transform: scale(1); }
+            .paper-frame { padding: 20px 40px; border-width: 15px; }
+            #card2 .paper-frame { flex-direction: row; }
+            .bouquet-img { max-width: 45%; max-height: 90%; }
+            .flower-msg-script { font-size: 5.5rem; }
+            .greeting-header { font-size: 4rem; }
+            .heart-frame-pop { width: 180px; height: 180px; clip-path: path("M90,40 C60,-25 -30,25 10,85 L90,170 L170,85 C210,25 120,-25 90,40 Z"); }
+            .romantic-card { width: 140px; height: 190px; }
+            .map-heart { width: 260px; height: 260px; clip-path: path("M130,65 C86.7,-32.5 -43.3,32.5 14.4,121.9 L130,243.8 L245.6,121.9 C303.3,32.5 173.3,-32.5 130,65 Z"); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="bg-hearts" id="bg-hearts"></div>
+
+    <audio id="bg-music" loop>
+        <source src="araw-araw.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="music-btn" onclick="toggleMusic()">
+        <span id="music-icon">🎵</span> <span id="music-text">Play Music</span>
+    </div>
+
+    <div class="window-frame">
+        <div class="title-bar">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+            <div class="app-title">For My Wife ❤️</div>
+        </div>
+
+        <div class="content-area">
+
+            <!-- SLIDE 1: ENVELOPE (NOW CLOSED) -->
+            <div class="slide active" id="slide1">
+                <div class="envelope-container" onclick="openEnvelope()">
+                    <div class="envelope-main">
+                        <div class="heart-seal">❤</div>
+                    </div>
+                </div>
+                <div class="open-text">A special gift for you...</div>
+            </div>
+
+            <!-- SLIDE 2: GREETING -->
+            <div class="slide" id="slide2">
+                <div class="greeting-header">Happy Valentine's Day</div>
+                <div class="popping-hearts-container">
+                    <div class="heart-frame-pop" style="animation-delay:0.3s"><img src="8df6e7dc-6e38-4477-b983-2edcb39620c2.jpg"></div>
+                    <div class="heart-frame-pop" style="animation-delay:0.9s"><img src="b6b6f2e5-20f3-49cd-af53-77486ade9a3a.jpg"></div>
+                    <div class="heart-frame-pop" style="animation-delay:1.5s"><img src="d935c103-8700-4a79-a3e1-9e30db1f41fe.jpg"></div>
+                </div>
+                <div style="font-family:'Sacramento', cursive; font-size:2.5rem; color:var(--pink-medium); margin-top:15px;">My Wife!</div>
+                <button class="btn-grad" style="margin-top:20px;" onclick="goToSlide('slide3')">Open Your Gifts</button>
+            </div>
+
+            <!-- SLIDE 3: MENU -->
+            <div class="slide" id="slide3">
+                <h2 style="font-family:'Playfair Display'; font-size: 1.5rem; color:#5d2e46; margin-bottom: 20px; text-align: center;">Choose a Card, Wife</h2>
+                <div class="cards-selection">
+                    <div class="romantic-card" onclick="goToSlide('card1')"><div class="card-icon">✉️</div><div class="card-label">Card 1</div></div>
+                    <div class="romantic-card" onclick="goToSlide('card2')"><div class="card-icon">✉️</div><div class="card-label">Card 2</div></div>
+                    <div class="romantic-card" onclick="goToSlide('card3')"><div class="card-icon">✉️</div><div class="card-label">Card 3</div></div>
+                </div>
+            </div>
+
+            <!-- CARD 1: THE LETTER (PRESERVED) -->
+            <div class="slide" id="card1">
+                <div class="paper-frame" style="border:none; padding:20px; flex-direction:column;">
+                    <h3 style="border-bottom: 1px solid #eee; padding-bottom:10px;">7/14/26</h3>
+                    <div style="flex:1; line-height:1.6; color:#555; font-size: 0.95rem;">
+                        <p><strong>My Dearest Wife,</strong></p>
+                        <p>"I will always choose you"</p>
+                        <p>I hope you appreciate this small gift that I made for you. Wife, through this letter I just want you to know that I'm beyond grateful that I met you, I will and I always appreciate every little thing you do (even though basi gina think mo wala ko na nakita ang small efforts mo, pero indi na siya small for me), and I will always be proud of you for every step nga gina make mo even though I know nga nabudlayan na ikaw, nakapoy, and nakulbaan. Bae, I hope that kung diin man ta dal-on sang life, kung ano man ang mga problems nga maabot saton, we will always find a reason to stay sa isa kag isa, biskan busy na ta, nabudlayan, na pressure na sa own life ta, I hope that ma over come ta na nga updanay ta. Why amo ni nga song ang gin pili ko and it is "Ikaw lang patutunguhan" kay kung diin man ko dal-on sang life, remember that I will always choose, and I will always come to you kay ikaw lang gusto ko maupod. I hope you know how much I'm willing to give everything for you, for us just let me do it hehe. Bae, I will always be here, I know na hadlok ka basi madula ko, but no (sorry ka ikaw lang gusto ko maupod). I will always willing to understand you, and habaan ko pa pasensya ko, i fix ko man pirme ang away before ta mag sleep and I will give you damo damo nga hugs hehe. But, indi lang amo na ang i hatag ko sa imo, I will give peace, comfort, safe place, rest, kag love nga deserve mo.  </p>
+                        <p>Thank you bae, for all the things nga gin hatag mo sakon, sa mga bagay nga gin himo mo biskan indi ta na ka need hambalan, thank you for making me happy every day (real lang), thank you for understanding me biskan ako mismo indi ko na mainchindihan kaugalingon ko hehe, thank you sa malawig nga pasensya. Lastly, thank you for giving me the peace, comfort, home, safe place, and the love that I have always wanted. I am happy to be with you, and I will always choose to be with you in every lifetime. I pray for you-not just about sa health and safety mo, but I pray that God will give you strength and reason to keep going and not to give up even though life is so cruel and messy, I pray that you achieve all those things nga gina storya mo pirme sakon, I pray for your healing-to all those wound nga abi mo healed na, I pray for your comfort everytime you feel alone, kag if may mga silent battles ka nga gina face, and I pray that God gives you the peace and the blessings that you deserve. Three Gerbera!</p>
+                        <p style="text-align: right; font-family:'Great Vibes'; font-size:1.5rem; margin-top:20px;">Your Wife,<br>Joji</p>
+                    </div>
+                </div>
+                <div class="btn-back" onclick="goToSlide('slide3')">← Back</div>
+            </div>
+
+            <!-- CARD 2: FLOWERS -->
+            <div class="slide" id="card2">
+                <div class="paper-frame">
+                    <img src="4685dcf5a143a61d0a49343e3ae5a3fb.jpg" class="bouquet-img">
+                    <div class="flower-msg-side">
+                        <div class="flower-msg-script">Flowers<br>for you!</div>
+                    </div>
+                </div>
+                <div class="btn-back" onclick="goToSlide('slide3')">← Back</div>
+            </div>
+
+            <!-- CARD 3: BIG PHOTO HEART -->
+            <div class="slide" id="card3">
+                <div class="paper-frame">
+                    <div class="map-header-text">where it all started</div>
+                    
+                    <div class="map-description">
+                        It all started when nag reply ka sa story ko HAHAHHAHAHAH and wala ka man dyapon na tak-an mag give compliment about sa eyes ko. Consistent si Kim day 1 pa lang guys, that's why kuhang-kuha niya ang kaba ko, KABADINGAN HAHAHHAHAHAHHAHAHHA
+                    </div>
+
+                    <div class="map-heart" style="background-image: url('f73e1222-5776-45c2-9971-3a767d01639d.jpg');"></div>
+                    
+                    <div class="map-date">07.22.2025</div>
+                </div>
+                <div class="btn-back" onclick="goToSlide('slide3')">← Back</div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function createFloatingHearts() {
+            const container = document.getElementById('bg-hearts');
+            const heart = document.createElement('div');
+            heart.classList.add('bg-heart'); heart.innerHTML = '❤';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+            heart.style.animationDuration = Math.random() * 5 + 5 + 's';
+            heart.style.color = `rgba(255, 255, 255, ${Math.random() * 0.5 + 0.1})`;
+            container.appendChild(heart);
+            setTimeout(() => heart.remove(), 8000);
+        }
+        setInterval(createFloatingHearts, 600);
+
+        function goToSlide(id) {
+            document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function openEnvelope() {
+            goToSlide('slide2');
+            let music = document.getElementById('bg-music');
+            music.volume = 0.5;
+            music.play().catch(e => console.log("Music interaction required"));
+            document.getElementById('music-text').innerText = "Playing...";
+        }
+
+        function toggleMusic() {
+            let music = document.getElementById('bg-music');
+            let text = document.getElementById('music-text');
+            if (music.paused) { music.play(); text.innerText = "Playing..."; }
+            else { music.pause(); text.innerText = "Paused"; }
+        }
+    </script>
+</body>
+</html>
